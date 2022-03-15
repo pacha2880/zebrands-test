@@ -1,4 +1,3 @@
-import json
 from django.http import HttpResponse
 from .models import *
 from rest_framework import generics
@@ -9,19 +8,23 @@ from .serializers import *
 from rest_framework import status
 from django.http import Http404
 from django.contrib.auth.models import User
+from .permissions import AuthenticatedOnly, AuthenticatedOrReadOnly
 
 
-class UserList(generics.ListAPIView):
+class UserList(generics.ListCreateAPIView):
+    permission_classes = [AuthenticatedOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
-class UserDetail(generics.RetrieveAPIView):
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [AuthenticatedOnly]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 
 class ProductList(APIView):
+    permission_classes = [AuthenticatedOrReadOnly]
     """
     List all products, or create a new snippet.
     """
@@ -40,6 +43,7 @@ class ProductList(APIView):
 
 
 class ProductDetail(APIView):
+    permission_classes = [AuthenticatedOrReadOnly]
     """
     Retrieve, update or delete a product instance.
     """
@@ -69,3 +73,7 @@ class ProductDetail(APIView):
         product = self.get_object(pk)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def home(request):
+    return HttpResponse('Home page')
