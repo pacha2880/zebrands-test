@@ -1,9 +1,12 @@
 from django.urls import path
-from . import views
-
+from rest_framework.urlpatterns import format_suffix_patterns
+from catalogapp import views
 
 urlpatterns = [
-    path('', views.home),
-    path('products/', views.products),
-    path('product/<str:sku>/', views.product),
+    path('products/', views.ProductList.as_view()),
+    path('products/<int:pk>/', views.ProductDetail.as_view()),
+    path('users/', views.UserList.as_view()),
+    path('users/<int:pk>/', views.UserDetail.as_view()),
 ]
+
+urlpatterns = format_suffix_patterns(urlpatterns)
