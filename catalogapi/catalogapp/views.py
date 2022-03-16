@@ -11,10 +11,11 @@ from .permissions import AuthenticatedOrReadOnly, AuthenticatedOnly
 
 
 class ProductList(APIView):
+    """
+    List all products, or create a new product.
+    """
+
     permission_classes = [AuthenticatedOrReadOnly]
-    """
-    List all products, or create a new snippet.
-    """
 
     def get(self, request, format=None):
         products = Product.objects.all()
@@ -30,10 +31,11 @@ class ProductList(APIView):
 
 
 class ProductDetail(APIView):
-    permission_classes = [AuthenticatedOrReadOnly]
     """
     Retrieve, update or delete a product instance.
     """
+
+    permission_classes = [AuthenticatedOrReadOnly]
 
     def get_object(self, pk):
         try:
@@ -63,10 +65,10 @@ class ProductDetail(APIView):
 
 
 class NotificationList(generics.ListAPIView):
+    """
+    List all notifications.
+    """
+
     permission_classes = [AuthenticatedOnly]
     queryset = Notification.objects.all()
     serializer_class = NotificationSerializer
-
-
-def home(request):
-    return HttpResponse('Home page')
