@@ -1,26 +1,12 @@
 from django.http import HttpResponse
 from .models import *
-from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
 from rest_framework import status
 from django.http import Http404
-from django.contrib.auth.models import User
-from .permissions import AuthenticatedOnly, AuthenticatedOrReadOnly
-
-
-class UserList(generics.ListCreateAPIView):
-    permission_classes = [AuthenticatedOnly]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
-
-
-class UserDetail(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [AuthenticatedOnly]
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+from .permissions import AuthenticatedOrReadOnly
 
 
 class ProductList(APIView):

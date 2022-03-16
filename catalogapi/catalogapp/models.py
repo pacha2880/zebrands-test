@@ -1,6 +1,8 @@
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
-# Create your models here.
+from catalogapi.auth.models import Notification
 
 
 class Product(models.Model):
