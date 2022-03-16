@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import *
+from rest_framework import generics
 from rest_framework import status
 from django.http import Http404
-from .permissions import AuthenticatedOrReadOnly
+from .permissions import AuthenticatedOrReadOnly, AuthenticatedOnly
 
 
 class ProductList(APIView):
@@ -59,6 +60,12 @@ class ProductDetail(APIView):
         product = self.get_object(pk)
         product.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class NotificationList(generics.ListAPIView):
+    permission_classes = [AuthenticatedOnly]
+    queryset = Notification.objects.all()
+    serializer_class = NotificationSerializer
 
 
 def home(request):

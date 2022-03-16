@@ -4,11 +4,12 @@ from rest_framework.response import Response
 from .serializers import *
 from .models import *
 from .permissions import AuthenticatedOnly
+from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 
 class MyObtainTokenPairView(TokenObtainPairView):
-    permission_classes = [AuthenticatedOnly]
+    permission_classes = [AllowAny]
     serializer_class = MyTokenObtainPairSerializer
 
 

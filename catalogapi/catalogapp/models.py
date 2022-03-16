@@ -2,8 +2,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from catalogapi.auth.models import Notification
-
 
 class Product(models.Model):
     sku = models.AutoField(primary_key=True)
@@ -14,3 +12,14 @@ class Product(models.Model):
 
     def queried(self):
         self.times_queried += 1
+
+
+class Notification(models.Model):
+    text = models.CharField(max_length=100)
+
+
+@receiver(post_save, sender=Product)
+def save_comment(sender, instance, created, **kwargs):
+    if created == False:
+        Notification.objects.create(
+            text='product with sku: ' + str(instance.sku) + ' has been updated')
